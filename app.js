@@ -21,6 +21,10 @@ function run(event) {
   axios
     .get('https://viacep.com.br/ws/' + zipCode + '/json/')
     .then(function (response){   
+        if(response.data.erro){
+            throw new Error('CEP invalido')
+        }
+
         content.innerHTML = '' 
         createLine(response.data.logradouro) 
         createLine('Bairro: ' + response.data.bairro) 
@@ -28,7 +32,8 @@ function run(event) {
         
     })
     .catch(function (error) {
-        console.log(error)
+        content.innerHTML = ''
+        createLine('Ops, algo deu errado!')
     })
 
 }

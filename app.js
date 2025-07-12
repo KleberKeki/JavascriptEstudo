@@ -11,6 +11,7 @@ function run(event) {
 
     zipCode = zipCode.replace(' ', '')
     zipCode = zipCode.replace('.', '')
+    zipCode = zipCode.replace('-', '')
     zipCode = zipCode.trim()
 
 
@@ -19,11 +20,24 @@ function run(event) {
 
   axios
     .get('https://viacep.com.br/ws/' + zipCode + '/json/')
-    .then(function (response){
-        console.log(response.data)
+    .then(function (response){   
+        content.innerHTML = '' 
+        createLine(response.data.logradouro) 
+        createLine('Bairro: ' + response.data.bairro) 
+        createLine('Cidade: ' + response.data.localidade + ' - ' + response.data.uf) 
+        
     })
     .catch(function (error) {
         console.log(error)
     })
+
+}
+
+function createLine (text) {
+    var line = document.createElement('p')
+    var text = document.createTextNode(text)
+
+        line.appendChild(text)
+        content.appendChild(line)
 
 }
